@@ -1,4 +1,9 @@
 {
+  "vue-reactivity": {
+    "createdAt": "2019/12/7",
+    "fileName": "vue-reactivity",
+    "title": "通过理解Vue的响应式原理来理解MVVM"
+  },
   "full-stack-common-sense-part1": {
     "createdAt": "2019/11/26",
     "fileName": "full-stack-common-sense-part1",

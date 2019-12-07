@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="useA"></div>
+		<div id="useB"></div>
+		<button onclick="changeA()">change myState.A</button>
+
+		<script>
+			class Dep {
+				constructor() {
+					this.subscribers = new Set();
+				}
+
+				depend() {
+					if (activeUpdate) {
+						// register the current active update as a subscriber
+						console.log("depending");
+						this.subscribers.add(activeUpdate);
+					}
+				}
+				notify() {
+					this.subscribers.forEach(sub => sub());
+				}
+			}
+
+			const myState = {
+				a: 3,
+				b: 30
+			};
+
+			Object.keys(myState).forEach(key => {
+				let internalValue = myState[key];
+				let dep = new Dep();
+				Object.defineProperty(myState, key, {
+					get() {
+						dep.depend();
+						return internalValue;
+					},
+					set(newValue) {
+						internalValue = newValue;
+						dep.notify();
+					}
+				});
+			});
+
+			let activeUpdate;
+
+			function autorun(update) {
+				console.log("aaa");
+				function wrappedUpdate() {
+					activeUpdate = wrappedUpdate;
+					console.log("bbb");
+					update();
+					activeUpdate = null;
+				}
+				wrappedUpdate();
+			}
+
+			const useA = document.querySelector("#useA");
+			const useB = document.querySelector("#useB");
+
+			autorun(() => {
+				useA.innerHTML = myState.a * 10;
+			});
+
+			autorun(() => {
+				useB.innerHTML = myState.a * 100;
+			});
+
+			function changeA() {
+				myState.a = 5;
+				console.log(myState.a);
+			}
+
+			/**/
+			
+		</script>
+	</body>
+</html>
