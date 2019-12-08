@@ -1,4 +1,9 @@
 {
+  "weapp-recycle-view-easy": {
+    "createdAt": "2019/12/8",
+    "fileName": "weapp-recycle-view-easy",
+    "title": "小程序实现最简单的长列表性能优化"
+  },
   "vue-reactivity": {
     "createdAt": "2019/12/7",
     "fileName": "vue-reactivity",
