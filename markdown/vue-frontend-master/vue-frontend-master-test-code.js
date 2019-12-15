@@ -12,3 +12,8 @@ Object.defineProperty(myState, 'b', {
 console.log(myState.b);
 myState.a = 5;
 console.log(myState.b)
+
+new Promise((resolve) => {
+  console.log("a")
+  resolve()
+})

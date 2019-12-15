@@ -1,4 +1,9 @@
 {
+  "kmp": {
+    "createdAt": "2019/12/14",
+    "fileName": "kmp",
+    "title": "JS实现KMP算法"
+  },
   "weapp-recycle-view-easy": {
     "createdAt": "2019/12/8",
     "fileName": "weapp-recycle-view-easy",
