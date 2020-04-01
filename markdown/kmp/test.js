@@ -1,61 +1,63 @@
-let result = [];
-
-let promise1 = new Promise(resolve => {
-	setTimeout(() => {
-		result.push("promise1 ");
-		resolve();
-	}, 1000);
-});
-let promise2 = new Promise(resolve => {
-	setTimeout(() => {
-		result.push("promise2 ");
-		resolve();
-	}, 2000);
-});
-let promise3 = new Promise(resolve => {
-	setTimeout(() => {
-		result.push("promise3 ");
-		resolve();
-	}, 500);
-});
-let promise4 = new Promise(resolve => {
-	setTimeout(() => {
-		result.push("promise4 ");
-		resolve();
-	}, 200);
-});
-
-Promise.prototype.myAll = function(promiseArray) {
-	return new Promise(resolve => {
-		let counter = 0;
-		for (let prom of promiseArray) {
-			console.log(prom);
-			Promise.resolve(prom).then(res => {
-				console.log(counter);
-				counter += 1;
-				if (counter == promiseArray.length) {
-					resolve();
-				}
-			});
-		}
-	});
+Function.prototype.myCall = function(context, ...args) {
+	if (!context) {
+		context = window;
+	}
+	let self = this;
+	context.fn = self;
+	let result = context.fn(...args);
+	delete context.fn;
+	return result;
 };
 
-Promise.prototype.myRace = function(promiseArray) {
-	return new Promise(resolve => {
-		for (let prom of promiseArray) {
-			Promise.resolve(prom)
-				.then(res => {
-					resolve();
-				})
-		}
-	});
+Function.prototype.myBind = function(context, ...args) {
+	if (!context) {
+		context = window;
+	}
+	let self = this;
+	return function() {
+		return self.apply(context, ...args);
+	};
 };
 
-Promise.prototype.myRace([promise1, promise2, promise3, promise4]).then(() => {
-	console.log(result);
-});
+function makeThrottle(fn, delay) {
+	let lastCall = 0;
+	return function(...args) {
+		const now = new Date().getTime();
+		if (now - lastCall < delay) {
+			return;
+		}
+		lastCall = now;
+		return fn(...args);
+	};
+}
 
-// Promise.all([promise1, promise2, promise3, promise4]).then(() => {
-// 	console.log(result);
-// });
+function makeDebounce(fn, delay) {
+	let timer;
+	return function(...args) {
+		if (timer) {
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				fn(...args);
+			}, delay);
+		}
+	};
+}
+
+function deepCopy(obj) {
+	let result;
+	if (typeof obj == "object") {
+		result = object.contructor == Array ? [] : {};
+		for (let key in obj) {
+			result[key] = typeof object == "object" ? deepCopy(obj[key]) : obj[key];
+		}
+	} else {
+		result = obj;
+	}
+	return result;
+}
+
+console.log(typeof null);
+console.log(typeof undefined);
+console.log(undefined === null)
+let testN = null
+if(testN) {console.log("testN ah!")} 
